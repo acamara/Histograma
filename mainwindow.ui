@@ -6,277 +6,271 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1123</width>
+    <width>1074</width>
     <height>637</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Histograma</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(0, 0, 0);</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>10</y>
-      <width>251</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Imagen Original</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>290</y>
-      <width>251</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Blue</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>300</y>
-      <width>251</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Red</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>290</y>
-      <width>251</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Green</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_image">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>30</y>
-      <width>255</width>
-      <height>255</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>255</width>
-      <height>255</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_red">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>320</y>
-      <width>256</width>
-      <height>256</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>256</width>
-      <height>256</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>256</width>
-      <height>256</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_green">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>320</y>
-      <width>256</width>
-      <height>256</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>256</width>
-      <height>256</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>256</width>
-      <height>256</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_blue">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>320</y>
-      <width>256</width>
-      <height>256</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>256</width>
-      <height>256</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>256</width>
-      <height>256</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>850</x>
-      <y>290</y>
-      <width>251</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Gray</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_gray">
-    <property name="geometry">
-     <rect>
-      <x>850</x>
-      <y>320</y>
-      <width>256</width>
-      <height>256</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>256</width>
-      <height>256</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>256</width>
-      <height>256</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>131</width>
-      <height>281</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Actions</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="loadimageButton">
-       <property name="text">
-        <string>Cargar imagen</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="histogramButton">
-       <property name="text">
-        <string>Histograma</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>285</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-color: rgb(170, 0, 0);</string>
+        </property>
+        <property name="title">
+         <string>Actions</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QPushButton" name="loadimageButton">
+           <property name="font">
+            <font>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Load Image</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="histogramButton">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Histogram</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_grouporigimg">
+        <item>
+         <widget class="QLabel" name="label_textorigimg">
+          <property name="maximumSize">
+           <size>
+            <width>320</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Candara</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Original Image</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_image">
+          <property name="minimumSize">
+           <size>
+            <width>320</width>
+            <height>240</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>320</width>
+            <height>240</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(0, 0, 0);</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_grouphisto">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_colorstext">
+        <item>
+         <widget class="QLabel" name="label_textred">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Candara</family>
+            <pointsize>12</pointsize>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 0, 0);
+border-color: rgb(255, 0, 0);</string>
+          </property>
+          <property name="text">
+           <string>Red</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_textgreen">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Candara</family>
+            <pointsize>12</pointsize>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(0, 255, 0);</string>
+          </property>
+          <property name="text">
+           <string>Green</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_textblue">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Candara</family>
+            <pointsize>12</pointsize>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(0, 0, 255);</string>
+          </property>
+          <property name="text">
+           <string>Blue</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_textgray">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Candara</family>
+            <pointsize>12</pointsize>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(128, 128, 128);</string>
+          </property>
+          <property name="text">
+           <string>Gray</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_colors"/>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1123</width>
+     <width>1074</width>
      <height>21</height>
     </rect>
    </property>

@@ -9,6 +9,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QString nom("HISTO %1");
+
+    for (int k=0;k<colors;k++){
+            label_[k] = new QLabel(tr(nom.arg(k + 1).toAscii()));
+            label_[k]->setStyleSheet("background-color: rgb(0, 0, 0)");
+            label_[k]->setMinimumSize(255, 255);
+            label_[k]->setMaximumSize(255,255);
+            ui->horizontalLayout_colors->addWidget(label_[k]);
+    }
 }
 
 MainWindow::~MainWindow(){
@@ -16,10 +26,9 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::inicializate_vector(){
-    vector_red = QVector<int>(256, 0);
-    vector_green = QVector<int>(256, 0);
-    vector_blue = QVector<int>(256, 0);
-    vector_gray = QVector<int>(256, 0);
+    for(int i = 0; i < colors; i++){
+        vector_[i] = QVector<int>(256, 0);
+    }
 }
 
 void MainWindow::inicializate_image(QImage *image){
@@ -36,6 +45,7 @@ void MainWindow::on_loadimageButton_clicked(){
     image.load (imagefile);
     imageresized=image.scaled(ui->label_image->width(),ui->label_image->height(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
     ui->label_image->setPixmap(QPixmap::fromImage(imageresized));
+    ui->histogramButton->setEnabled(true);
 }
 
 int max_of_vector(QVector<int> vector){
@@ -63,10 +73,10 @@ void MainWindow::analize_image(){
         int g = qGreen(c);
         int b = qBlue(c);
         //qDebug()<<"Red: "<<r<<" Green: "<<g<<" Blue: "<<b;
-        vector_red[r]++;
-        vector_green[g]++;
-        vector_blue[b]++;
-        vector_gray[qRound((r+g+b)/3)]++;
+        vector_[red][r]++;
+        vector_[green][g]++;
+        vector_[blue][b]++;
+        vector_[gray][qRound((r+g+b)/3)]++;
        }
     }
     //qDebug()<<vector_red;
@@ -78,19 +88,13 @@ void MainWindow::on_histogramButton_clicked(){
 }
 
 void MainWindow::calculatehistogram(){
-    normalize_vector(&vector_red,max_of_vector(vector_red));
-    normalize_vector(&vector_green,max_of_vector(vector_green));
-    normalize_vector(&vector_blue,max_of_vector(vector_blue));
-    normalize_vector(&vector_gray,max_of_vector(vector_gray));
-    //qDebug()<<vector_red;
-
-    painthistogram(vector_red, "red");
-    painthistogram(vector_green, "green");
-    painthistogram(vector_blue, "blue");
-    painthistogram(vector_gray, "gray");
+    for(int i=0; i<colors; i++){
+        normalize_vector(&vector_[i],max_of_vector(vector_[i]));
+        painthistogram(vector_[i], i);
+    }
 }
 
-void MainWindow::painthistogram(QVector<int> vector, QString color){
+void MainWindow::painthistogram(QVector<int> vector, int color){
     QImage  image(256,256,QImage::Format_RGB888);
 
     inicializate_image(&image);
@@ -98,16 +102,16 @@ void MainWindow::painthistogram(QVector<int> vector, QString color){
     for(int i=0; i< vector.size(); i++){
         int j = 0;
         while(vector.at(i) >= 0){
-            if(color == "red"){
+            if(color == red){
                 image.setPixel(i,image.height()-j-1,qRgb(255,0,0));
             }
-            if(color == "green"){
+            if(color == green){
                 image.setPixel(i,image.height()-j-1,qRgb(0,255,0));
             }
-            if(color == "blue"){
+            if(color == blue){
                 image.setPixel(i,image.height()-j-1,qRgb(0,0,255));
             }
-            if(color == "gray"){
+            if(color == gray){
                 image.setPixel(i,image.height()-j-1,qRgb(128,128,128));
             }
             vector[i]--;
@@ -115,17 +119,6 @@ void MainWindow::painthistogram(QVector<int> vector, QString color){
         }
     }
 
-    if(color == "red"){
-        ui->label_red->setPixmap(QPixmap::fromImage(image));
-    }
-    if(color == "green"){
-        ui->label_green->setPixmap(QPixmap::fromImage(image));
-    }
-    if(color == "blue"){
-       ui->label_blue->setPixmap(QPixmap::fromImage(image));
-    }
-    if(color == "gray"){
-       ui->label_gray->setPixmap(QPixmap::fromImage(image));
-    }
+    label_[color]->setPixmap(QPixmap::fromImage(image));
 
 }

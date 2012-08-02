@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QVector>
+#include <QLabel>
 
 namespace Ui {
 class MainWindow;
@@ -21,19 +22,18 @@ private slots:
     void analize_image();
     void calculatehistogram();
     void inicializate_image(QImage *image);
-    void painthistogram(QVector<int> vector, QString color);
+    void painthistogram(QVector<int> vector, int color);
     void on_loadimageButton_clicked();
     void on_histogramButton_clicked();
 
 private:
-    Ui::MainWindow *ui;
 
+    enum {red=0, green=1, blue=2, gray=3, colors=4};
+
+    Ui::MainWindow *ui;
+    QLabel *label_[colors];
     QImage image;
-    QVector<int> vector_red;
-    QVector<int> vector_green;
-    QVector<int> vector_blue;
-    QVector<int> vector_gray;
-    QVector<int> vector_combined;
+    QVector<int> vector_[colors];
 };
 
 #endif // MAINWINDOW_H
