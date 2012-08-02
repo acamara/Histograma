@@ -19,6 +19,7 @@ void MainWindow::inicializate_vector(){
     vector_red = QVector<int>(256, 0);
     vector_green = QVector<int>(256, 0);
     vector_blue = QVector<int>(256, 0);
+    vector_gray = QVector<int>(256, 0);
 }
 
 void MainWindow::inicializate_image(QImage *image){
@@ -65,6 +66,7 @@ void MainWindow::analize_image(){
         vector_red[r]++;
         vector_green[g]++;
         vector_blue[b]++;
+        vector_gray[qRound((r+g+b)/3)]++;
        }
     }
     //qDebug()<<vector_red;
@@ -79,11 +81,13 @@ void MainWindow::calculatehistogram(){
     normalize_vector(&vector_red,max_of_vector(vector_red));
     normalize_vector(&vector_green,max_of_vector(vector_green));
     normalize_vector(&vector_blue,max_of_vector(vector_blue));
+    normalize_vector(&vector_gray,max_of_vector(vector_gray));
     //qDebug()<<vector_red;
 
     painthistogram(vector_red, "red");
     painthistogram(vector_green, "green");
     painthistogram(vector_blue, "blue");
+    painthistogram(vector_gray, "gray");
 }
 
 void MainWindow::painthistogram(QVector<int> vector, QString color){
@@ -103,8 +107,11 @@ void MainWindow::painthistogram(QVector<int> vector, QString color){
             if(color == "blue"){
                 image.setPixel(i,image.height()-j-1,qRgb(0,0,255));
             }
-                  vector[i]--;
-                  j++;
+            if(color == "gray"){
+                image.setPixel(i,image.height()-j-1,qRgb(128,128,128));
+            }
+            vector[i]--;
+            j++;
         }
     }
 
@@ -116,6 +123,9 @@ void MainWindow::painthistogram(QVector<int> vector, QString color){
     }
     if(color == "blue"){
        ui->label_blue->setPixmap(QPixmap::fromImage(image));
+    }
+    if(color == "gray"){
+       ui->label_gray->setPixmap(QPixmap::fromImage(image));
     }
 
 }
