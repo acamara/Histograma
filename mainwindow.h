@@ -18,22 +18,22 @@ public:
     ~MainWindow();
     
 private slots:
-    void inicializate_vector();
+    void initialize_vector();
     void analize_image();
     void calculatehistogram();
-    void inicializate_image(QImage *image);
-    void painthistogram(QVector<int> vector, int color);
+    void initialize_image(QImage *image);
+    void painthistogram(int color);
+    void paint_color(QVector<int> vector, QImage *image, QRgb rgb);
     void on_loadimageButton_clicked();
     void on_histogramButton_clicked();
 
 private:
 
-    enum {red=0, green=1, blue=2, gray=3, colors=4};
+    enum {red=0, green=1, blue=2, gray=3, combined=4, colors=4, num_histo=5};
 
     Ui::MainWindow *ui;
-    QLabel *label_combined;
-    QLabel *label_[colors];
-    QImage image;
+    QLabel *label_[num_histo];
+    QImage *image_original;
     QVector<int> vector_[colors];
 };
 

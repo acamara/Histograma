@@ -27,32 +27,31 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QString nom("HISTO %1");
 
-    for (int k=0;k<colors;k++){
+    for (int k=0;k<num_histo;k++){
             label_[k] = new QLabel(tr(nom.arg(k + 1).toAscii()));
             label_[k]->setStyleSheet("background-color: rgb(0, 0, 0)");
             label_[k]->setMinimumSize(255, 255);
             label_[k]->setMaximumSize(255,255);
-            ui->gridLayout->addWidget(label_[k],5,k);
-    }
 
-    QLabel *label_combined = new QLabel(tr(nom.arg("combined").toAscii()));
-    label_combined->setStyleSheet("background-color: rgb(0, 0, 0)");
-    label_combined->setMinimumSize(255, 255);
-    label_combined->setMaximumSize(255,255);
-    ui->gridLayout->addWidget(label_combined,1,3);
+            if(k == combined){
+                ui->gridLayout->addWidget(label_[k],1,3);
+            }else{
+                ui->gridLayout->addWidget(label_[k],5,k);
+            }
+    }   
 }
 
 MainWindow::~MainWindow(){
     delete ui;
 }
 
-void MainWindow::inicializate_vector(){
+void MainWindow::initialize_vector(){
     for(int i = 0; i < colors; i++){
         vector_[i] = QVector<int>(256, 0);
     }
 }
 
-void MainWindow::inicializate_image(QImage *image){
+void MainWindow::initialize_image(QImage *image){
     for(int i =0; i < image->width(); ++i){
        for(int j =0; j < image->height(); ++j) {
           image->setPixel(i,j,qRgb(0,0,0));
@@ -63,9 +62,9 @@ void MainWindow::inicializate_image(QImage *image){
 void MainWindow::on_loadimageButton_clicked(){
     QString imagefile = QFileDialog::getOpenFileName( this,tr("Selecciona una Imatge"),QDir::currentPath(),"Imatges (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
     QImage  imageresized;
-    image.load (imagefile);
-    imageresized=image.scaled((image.width()*255)/image.height(),255,Qt::KeepAspectRatio,Qt::SmoothTransformation);
-    ui->label_image->setMaximumWidth((image.width()*255)/image.height());
+    image_original->load (imagefile);
+    imageresized=image_original->scaled((image_original->width()*255)/image_original->height(),255,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    ui->label_image->setMaximumWidth((image_original->width()*255)/image_original->height());
     ui->label_image->setPixmap(QPixmap::fromImage(imageresized));
     ui->label_image->setStyleSheet("background-color");
     ui->histogramButton->setEnabled(true);
@@ -76,13 +75,12 @@ void MainWindow::on_histogramButton_clicked(){
     calculatehistogram();
 }
 
-
 void MainWindow::analize_image(){
-   inicializate_vector();
+   initialize_vector();
 
-   for(int i =0; i < image.width(); ++i){
-    for(int j =0; j < image.height(); ++j) {
-        QRgb c = image.pixel(i,j);
+   for(int i =0; i < image_original->width(); ++i){
+    for(int j =0; j < image_original->height(); ++j) {
+        QRgb c = image_original->pixel(i,j);
         int r = qRed(c);
         int g = qGreen(c);
         int b = qBlue(c);
@@ -97,37 +95,59 @@ void MainWindow::analize_image(){
 }
 
 void MainWindow::calculatehistogram(){
+    QVector<int> maxs_of_colors(colors,0);
+
     for(int i=0; i<colors; i++){
-        normalize_vector(&vector_[i],max_of_vector(vector_[i]));
-        painthistogram(vector_[i], i);
+        maxs_of_colors[i] = (max_of_vector(vector_[i]));
+        normalize_vector(&vector_[i],maxs_of_colors.at(i));
+        painthistogram(i);
+    }
+
+    int max = max_of_vector(maxs_of_colors);
+
+    for(int i=0; i<colors; i++){
+        double factor_escala = (double)max/maxs_of_colors[i];
+        normalize_vector(&vector_[i],factor_escala*255);
+    }
+
+    painthistogram(combined);
+}
+
+void MainWindow::paint_color(QVector<int> vector, QImage *image, QRgb rgb){
+   for(int i=0; i< vector.size(); i++){
+        int j = 0;
+        while(vector.at(i) >= 0){
+            image->setPixel(i,image->height()-j-1,rgb);
+            vector[i]--;
+            j++;
+         }
     }
 }
 
-void MainWindow::painthistogram(QVector<int> vector, int color){
-    QImage  image(256,256,QImage::Format_RGB888);
 
-    inicializate_image(&image);
+void MainWindow::painthistogram(int color){
+    QImage  *image = new QImage(256,256,QImage::Format_RGB888);
 
-    for(int i=0; i< vector.size(); i++){
-        int j = 0;
-        while(vector.at(i) >= 0){
-            if(color == red){
-                image.setPixel(i,image.height()-j-1,qRgb(255,0,0));
-            }
-            if(color == green){
-                image.setPixel(i,image.height()-j-1,qRgb(0,255,0));
-            }
-            if(color == blue){
-                image.setPixel(i,image.height()-j-1,qRgb(0,0,255));
-            }
-            if(color == gray){
-                image.setPixel(i,image.height()-j-1,qRgb(128,128,128));
-            }
-            vector[i]--;
-            j++;
-        }
+    initialize_image(image);
+
+    if(color == red){
+        paint_color(vector_[color],image,qRgb(255,0,0));
+    }
+    if(color == green){
+        paint_color(vector_[color],image,qRgb(0,255,0));
+    }
+    if(color == blue){
+        paint_color(vector_[color],image,qRgb(0,0,255));
+    }
+    if(color == gray){
+        paint_color(vector_[color],image,qRgb(128,128,128));
+    }
+    if(color == combined){
+        paint_color(vector_[red],image,qRgb(255,0,0));
+        paint_color(vector_[green],image,qRgb(0,255,0));
+        paint_color(vector_[blue],image,qRgb(0,0,255));
     }
 
-    label_[color]->setPixmap(QPixmap::fromImage(image));
+    label_[color]->setPixmap(QPixmap::fromImage(*image));
 
 }
