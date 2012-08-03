@@ -31,6 +31,7 @@ private:
     enum {red=0, green=1, blue=2, gray=3, colors=4};
 
     Ui::MainWindow *ui;
+    QLabel *label_combined;
     QLabel *label_[colors];
     QImage image;
     QVector<int> vector_[colors];

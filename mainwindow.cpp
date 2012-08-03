@@ -4,6 +4,21 @@
 #include <QtGui>
 #include <QDebug>
 
+int max_of_vector(QVector<int> vector){
+    int max = 0;
+    for(int i = 0; i < vector.size(); i++){
+        if (vector.at(i)>max) max =vector.at(i);
+    }
+
+    return max;
+}
+
+void normalize_vector(QVector<int> *vector, int max){
+    for(int i = 0; i < vector->size(); i++){
+        vector->replace(i, qRound((vector->at(i)*255)/max));
+    }
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,8 +32,14 @@ MainWindow::MainWindow(QWidget *parent) :
             label_[k]->setStyleSheet("background-color: rgb(0, 0, 0)");
             label_[k]->setMinimumSize(255, 255);
             label_[k]->setMaximumSize(255,255);
-            ui->horizontalLayout_colors->addWidget(label_[k]);
+            ui->gridLayout->addWidget(label_[k],5,k);
     }
+
+    QLabel *label_combined = new QLabel(tr(nom.arg("combined").toAscii()));
+    label_combined->setStyleSheet("background-color: rgb(0, 0, 0)");
+    label_combined->setMinimumSize(255, 255);
+    label_combined->setMaximumSize(255,255);
+    ui->gridLayout->addWidget(label_combined,1,3);
 }
 
 MainWindow::~MainWindow(){
@@ -43,25 +64,18 @@ void MainWindow::on_loadimageButton_clicked(){
     QString imagefile = QFileDialog::getOpenFileName( this,tr("Selecciona una Imatge"),QDir::currentPath(),"Imatges (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
     QImage  imageresized;
     image.load (imagefile);
-    imageresized=image.scaled(ui->label_image->width(),ui->label_image->height(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    imageresized=image.scaled((image.width()*255)/image.height(),255,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    ui->label_image->setMaximumWidth((image.width()*255)/image.height());
     ui->label_image->setPixmap(QPixmap::fromImage(imageresized));
+    ui->label_image->setStyleSheet("background-color");
     ui->histogramButton->setEnabled(true);
 }
 
-int max_of_vector(QVector<int> vector){
-    int max = 0;
-    for(int i = 0; i < vector.size(); i++){
-        if (vector.at(i)>max) max =vector.at(i);
-    }
-
-    return max;
+void MainWindow::on_histogramButton_clicked(){
+    analize_image();
+    calculatehistogram();
 }
 
-void normalize_vector(QVector<int> *vector, int max){
-    for(int i = 0; i < vector->size(); i++){
-        vector->replace(i, qRound((vector->at(i)*255)/max));
-    }
-}
 
 void MainWindow::analize_image(){
    inicializate_vector();
@@ -80,11 +94,6 @@ void MainWindow::analize_image(){
        }
     }
     //qDebug()<<vector_red;
-}
-
-void MainWindow::on_histogramButton_clicked(){
-    analize_image();
-    calculatehistogram();
 }
 
 void MainWindow::calculatehistogram(){
