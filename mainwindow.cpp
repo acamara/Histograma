@@ -102,10 +102,10 @@ void MainWindow::calculatehistogram(){
         normalize_vector(&vector_[i],maxs_of_colors.at(i));
         painthistogram(i);
     }
-
+    maxs_of_colors.remove(3);
     int max = max_of_vector(maxs_of_colors);
-
-    for(int i=0; i<colors; i++){
+    qDebug()<<maxs_of_colors;
+    for(int i=0; i<colors-1; i++){
         double factor_escala = (double)max/maxs_of_colors[i];
         normalize_vector(&vector_[i],factor_escala*255);
     }
@@ -123,7 +123,6 @@ void MainWindow::paint_color(QVector<int> vector, QImage *image, QRgb rgb){
          }
     }
 }
-
 
 void MainWindow::painthistogram(int color){
     QImage  *image = new QImage(256,256,QImage::Format_RGB888);
