@@ -24,6 +24,7 @@ private slots:
     void initialize_image(QImage *image);
     void painthistogram(int color);
     void paint_color(QVector<int> vector, QImage *image, QRgb rgb);
+    void paint_components(QImage *image);
     void on_loadimageButton_clicked();
     void on_histogramButton_clicked();
 

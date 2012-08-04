@@ -113,6 +113,7 @@ void MainWindow::calculatehistogram(){
     painthistogram(combined);
 }
 
+
 void MainWindow::paint_color(QVector<int> vector, QImage *image, QRgb rgb){
    for(int i=0; i< vector.size(); i++){
         int j = 0;
@@ -121,6 +122,29 @@ void MainWindow::paint_color(QVector<int> vector, QImage *image, QRgb rgb){
             vector[i]--;
             j++;
          }
+    }
+}
+
+void MainWindow::paint_components(QImage *image){
+    qDebug()<<blue;
+    for(int i=0; i< image->width(); i++){
+        for(int j=image->height()-1; j>0; j--){
+            int r = 0, g = 0, b = 0;
+            if(vector_[red][i]>0){
+                r=255;
+                vector_[red][i]--;
+            }
+            if(vector_[green][i]>0){
+                g=255;
+                vector_[green][i]--;
+            }
+            if(vector_[blue][i]>0){
+                b=255;
+                vector_[blue][i]--;
+            }
+
+        image->setPixel(i,j,qRgb(r,g,b));
+        }
     }
 }
 
@@ -142,9 +166,7 @@ void MainWindow::painthistogram(int color){
         paint_color(vector_[color],image,qRgb(128,128,128));
     }
     if(color == combined){
-        paint_color(vector_[red],image,qRgb(255,0,0));
-        paint_color(vector_[green],image,qRgb(0,255,0));
-        paint_color(vector_[blue],image,qRgb(0,0,255));
+        paint_components(image);
     }
 
     label_[color]->setPixmap(QPixmap::fromImage(*image));
