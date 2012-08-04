@@ -18,21 +18,20 @@ public:
     ~MainWindow();
     
 private slots:
+    void create_viewports();
     void initialize_vector();
     void analize_image();
-    void calculatehistogram();
-    void initialize_image(QImage *image);
-    void painthistogram(int color);
-    void paint_color(QVector<int> vector, QImage *image, QRgb rgb);
-    void paint_components(QImage *image);
+    void calculate_histogram();
+    void paint_histogram(int color);
+    void paint_components(QImage *image, bool pred, bool pgreen, bool pblue, bool pgray);
     void on_loadimageButton_clicked();
     void on_histogramButton_clicked();
 
 private:
+    Ui::MainWindow *ui;
 
     enum {red=0, green=1, blue=2, gray=3, combined=4, colors=4, num_histo=5};
 
-    Ui::MainWindow *ui;
     QLabel *label_[num_histo];
     QImage *image_original;
     QVector<int> vector_[colors];
