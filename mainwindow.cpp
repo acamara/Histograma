@@ -32,7 +32,7 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::initialize_vector(){
-    for(int i = 0; i < colors; i++){
+    for(int i = 0; i < num_colors; i++){
         vector_[i] = QVector<int>(256, 0);
     }
 }
@@ -52,23 +52,29 @@ void MainWindow::create_viewports(){
                 ui->gridLayout->addWidget(label_[k],5,k);
             }
     }
+    ui->saveHistogramButton->setEnabled(false);
+    ui->comboBox->setEnabled(false);
 }
 
 void MainWindow::on_loadimageButton_clicked(){
     create_viewports();
-    QString imagefile = QFileDialog::getOpenFileName( this,tr("Selecciona una Imatge"),QDir::currentPath(),"Imatges (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
+    QString imagefile = QFileDialog::getOpenFileName( this,tr("Select Image"),QDir::currentPath(),"Image (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
     QImage  imageresized;
-    image_original->load (imagefile);
-    imageresized=image_original->scaled((image_original->width()*255)/image_original->height(),255,Qt::KeepAspectRatio,Qt::SmoothTransformation);
-    ui->label_image->setMaximumWidth((image_original->width()*255)/image_original->height());
-    ui->label_image->setPixmap(QPixmap::fromImage(imageresized));
-    ui->label_image->setStyleSheet("background-color");
-    ui->histogramButton->setEnabled(true);
+
+    if(image_original->load (imagefile)){
+        imageresized=image_original->scaled((image_original->width()*255)/image_original->height(),255,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+        ui->label_image->setMaximumWidth((image_original->width()*255)/image_original->height());
+        ui->label_image->setPixmap(QPixmap::fromImage(imageresized));
+        ui->label_image->setStyleSheet("background-color");
+        ui->histogramButton->setEnabled(true);
+    }
 }
 
 void MainWindow::on_histogramButton_clicked(){
     analize_image();
     calculate_histogram();
+    ui->saveHistogramButton->setEnabled(true);
+    ui->comboBox->setEnabled(true);
 }
 
 void MainWindow::analize_image(){
@@ -91,9 +97,9 @@ void MainWindow::analize_image(){
 }
 
 void MainWindow::calculate_histogram(){
-    QVector<int> maxs_of_colors(colors,0);
+    QVector<int> maxs_of_colors(num_colors,0);
 
-    for(int i=0; i<colors; i++){
+    for(int i=0; i<num_colors; i++){
         maxs_of_colors[i] = (max_of_vector(vector_[i]));
         normalize_vector(&vector_[i],maxs_of_colors.at(i));
         paint_histogram(i);
@@ -101,7 +107,7 @@ void MainWindow::calculate_histogram(){
     maxs_of_colors.remove(3);
     int max = max_of_vector(maxs_of_colors);
     //qDebug()<<maxs_of_colors;
-    for(int i=0; i<colors-1; i++){
+    for(int i=0; i<num_colors-1; i++){
         double factor_escala = (double)max/maxs_of_colors[i];
         normalize_vector(&vector_[i],factor_escala*255);
     }
@@ -140,23 +146,39 @@ void MainWindow::paint_components(QImage *image, bool pred, bool pgreen, bool pb
 }
 
 void MainWindow::paint_histogram(int color){
-    QImage  *image = new QImage(256,256,QImage::Format_RGB888);
+    image_[color] = new QImage(256,256,QImage::Format_RGB888);
 
     if(color == red){
-        paint_components(image, true, false, false, false);
+        paint_components(image_[red], true, false, false, false);
     }
     if(color == green){
-        paint_components(image, false, true, false, false);
+        paint_components(image_[green], false, true, false, false);
     }
     if(color == blue){
-        paint_components(image, false, false, true, false);
+        paint_components(image_[blue], false, false, true, false);
     }
     if(color == gray){
-        paint_components(image, false, false, false, true);
+        paint_components(image_[gray], false, false, false, true);
     }
     if(color == combined){
-        paint_components(image, true, true, true, false);
+        paint_components(image_[combined], true, true, true, false);
     }
 
-    label_[color]->setPixmap(QPixmap::fromImage(*image));
+    label_[color]->setPixmap(QPixmap::fromImage(*image_[color]));
+}
+
+void MainWindow::on_saveHistogramButton_clicked(){
+    QStringList ncolors;
+    ncolors<<"_red"<<"_green"<<"_blue"<<"_gray"<<"_combined";
+    int color = ui->comboBox->currentIndex();
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "color.jpg", tr("Image (*.jpg)"));
+    QString dirName= fileName.left(fileName.lastIndexOf("."));
+
+    if (ui->comboBox->currentText()=="all"){
+        for(int i = 0; i<num_histo; i++) image_[i]->save(dirName+ncolors.at(i)+".jpg","JPEG");
+    }
+    else{
+        image_[color]->save(fileName,"JPEG");
+    }
 }

@@ -27,14 +27,18 @@ private slots:
     void on_loadimageButton_clicked();
     void on_histogramButton_clicked();
 
+    void on_saveHistogramButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
-    enum {red=0, green=1, blue=2, gray=3, combined=4, colors=4, num_histo=5};
+    enum {red=0, green=1, blue=2, gray=3, combined=4, num_colors=4, num_histo=5};
 
     QLabel *label_[num_histo];
+    QImage *image_[num_histo];
     QImage *image_original;
-    QVector<int> vector_[colors];
+
+    QVector<int> vector_[num_colors];
 };
 
 #endif // MAINWINDOW_H
